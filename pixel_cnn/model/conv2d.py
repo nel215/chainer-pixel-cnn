@@ -5,14 +5,15 @@ from chainer import functions as F
 
 class DownRightShiftedConv2D(Chain):
 
-    def __init__(self, n_out, ksize=None):
+    def __init__(self, n_out, ksize=None, stride=1):
         ksize = (2, 2) if ksize is None else ksize
         super(DownRightShiftedConv2D, self).__init__()
         self.pad = [
             (0, 0), (0, 0), (ksize[0]-1, 0), (ksize[1]-1, 0),
         ]
         with self.init_scope():
-            self.conv2d = L.Convolution2D(None, n_out, ksize=ksize)
+            self.conv2d = L.Convolution2D(
+                None, n_out, ksize=ksize, stride=stride)
 
     def __call__(self, x):
         h = F.pad(x, self.pad, 'constant')
@@ -22,7 +23,7 @@ class DownRightShiftedConv2D(Chain):
 
 class DownShiftedConv2D(Chain):
 
-    def __init__(self, n_out, ksize=None):
+    def __init__(self, n_out, ksize=None, stride=1):
         super(DownShiftedConv2D, self).__init__()
         ksize = (2, 3) if ksize is None else ksize
         self.pad = [
@@ -30,7 +31,7 @@ class DownShiftedConv2D(Chain):
             (ksize[0]-1, 0), ((ksize[1]-1)//2, (ksize[1]-1)//2),
         ]
         with self.init_scope():
-            self.conv2d = L.Convolution2D(None, n_out, ksize=ksize)
+            self.conv2d = L.Convolution2D(None, n_out, ksize=ksize, stride=stride)
 
     def __call__(self, x):
         h = F.pad(x, self.pad, 'constant')
@@ -40,12 +41,13 @@ class DownShiftedConv2D(Chain):
 
 class DownShiftedDeconv2D(Chain):
 
-    def __init__(self, n_out, ksize=None):
+    def __init__(self, n_out, ksize=None, stride=1):
         super(DownShiftedDeconv2D, self).__init__()
         ksize = (2, 3) if ksize is None else ksize
         self.ksize = ksize
         with self.init_scope():
-            self.deconv2d = L.Deconvolution2D(None, n_out, ksize=ksize)
+            self.deconv2d = L.Deconvolution2D(
+                None, n_out, ksize=ksize, stride=stride)
 
     def __call__(self, x):
         h = self.deconv2d(x)
@@ -56,12 +58,13 @@ class DownShiftedDeconv2D(Chain):
 
 class DownRightShiftedDeconv2D(Chain):
 
-    def __init__(self, n_out, ksize=None):
+    def __init__(self, n_out, ksize=None, stride=1):
         super(DownRightShiftedDeconv2D, self).__init__()
         ksize = (2, 2) if ksize is None else ksize
         self.ksize = ksize
         with self.init_scope():
-            self.deconv2d = L.Deconvolution2D(None, n_out, ksize=ksize)
+            self.deconv2d = L.Deconvolution2D(
+                None, n_out, ksize=ksize, stride=stride)
 
     def __call__(self, x):
         h = self.deconv2d(x)
