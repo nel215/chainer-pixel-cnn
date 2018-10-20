@@ -9,12 +9,12 @@ def concat_elu(x):
 
 class GatedResnet(Chain):
 
-    def __init__(self, n_out):
+    def __init__(self, n_out, Conv2D):
         super(GatedResnet, self).__init__()
         with self.init_scope():
-            self.conv1 = L.Convolution2D(None, n_out, ksize=3, pad=1)
+            self.conv1 = Conv2D(n_out)
             self.conv2 = L.Convolution2D(None, n_out, ksize=1)
-            self.conv3 = L.Convolution2D(None, 2*n_out, ksize=3, pad=1)
+            self.conv3 = Conv2D(2*n_out)
 
     def __call__(self, x, a=None):
         h = self.conv1(concat_elu(x))
