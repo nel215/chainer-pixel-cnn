@@ -35,6 +35,16 @@ def test_down_deconv_call():
     assert h.shape == (b, n_out, n, n)
 
 
+def test_down_deconv_call_with_stride():
+    b = 4
+    n = 16
+    n_out = 8
+    model = DownShiftedDeconv2D(n_out, stride=2)
+    x = np.zeros((b, 16, n, n), dtype='f')
+    h = model(x)
+    assert h.shape == (b, n_out, 2*n, 2*n)
+
+
 def test_down_right_deconv_call():
     b = 4
     n = 16
