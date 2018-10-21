@@ -66,7 +66,7 @@ class PixelCNN(Chain):
 
             self.last_conv = L.Convolution2D(None, 10*n_mix, ksize=1)
 
-    def __call__(self, x):
+    def forward(self, x):
         """
         Args:
             x: (b, c, h, w)
@@ -106,5 +106,9 @@ class PixelCNN(Chain):
 
         y = self.last_conv(F.elu(ul))
 
+        return y
+
+    def __call__(self, x):
+        y = self.forward(x)
         loss = mixture_of_discretized_logistics_nll(x, y)
         return loss
