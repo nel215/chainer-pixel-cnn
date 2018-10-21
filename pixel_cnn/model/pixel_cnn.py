@@ -1,3 +1,4 @@
+import chainer
 from chainer import links as L
 from chainer import functions as F
 from chainer import Chain, ChainList
@@ -111,4 +112,9 @@ class PixelCNN(Chain):
     def __call__(self, x):
         y = self.forward(x)
         loss = mixture_of_discretized_logistics_nll(x, y)
+
+        chainer.report({
+            'loss': loss,
+        }, self)
+
         return loss
