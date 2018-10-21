@@ -60,7 +60,7 @@ def mixture_of_discretized_logistics_nll(x, y):
 
     loss = F.logsumexp(log_prob, 1)
     loss = F.sum(loss, axis=(1, 2))
-    return F.mean(loss)
+    return -F.mean(loss)
 
 
 def log_prob_from_logit(x):
